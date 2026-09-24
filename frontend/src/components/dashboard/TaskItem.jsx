@@ -33,8 +33,11 @@ function TaskItem({ task, onComplete, onDelete, onEdit }) {
           </div>
         ) : (
           <div className="task-copy">
-            <span className="task-title">{task.title}</span>
-            <span className="task-priority">{task.priority}</span>
+              <span className="task-title">{task.title}</span>
+              {task.dueDate && (
+                <span className="task-due">{new Date(task.dueDate).toLocaleDateString()}</span>
+              )}
+              <span className="task-priority">{task.priority}</span>
           </div>
         )}
       </div>

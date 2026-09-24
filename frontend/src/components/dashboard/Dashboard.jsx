@@ -29,6 +29,7 @@ function Dashboard() {
     return savedTasks ? JSON.parse(savedTasks) : initialTasks
   })
   const [newTask, setNewTask] = useState('')
+  const [newDueDate, setNewDueDate] = useState('')
   const [selectedPriority, setSelectedPriority] = useState('Medium')
   const [filter, setFilter] = useState('all')
 
@@ -61,11 +62,9 @@ function Dashboard() {
       )
     )
   }
-
   function handleDeleteTask(id) {
     setTasks(currentTasks => currentTasks.filter(task => task.id !== id))
   }
-
   function handleEditTask(id, updatedTitle) {
     const trimmedTitle = updatedTitle.trim()
     if (!trimmedTitle) return
@@ -93,12 +92,14 @@ function Dashboard() {
         id: Date.now(),
         title: trimmedTask,
         completed: false,
-        priority: selectedPriority
+        priority: selectedPriority,
+        dueDate: newDueDate || null
       },
       ...currentTasks
     ])
     setNewTask('')
     setSelectedPriority('Medium')
+    setNewDueDate('')
   }
 
   return (
@@ -144,6 +145,13 @@ function Dashboard() {
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
           </select>
+
+          <input
+            type="date"
+            value={newDueDate}
+            onChange={event => setNewDueDate(event.target.value)}
+            aria-label="Select due date"
+          />
 
           <button type="button" onClick={handleAddTask}>Add task</button>
         </form>
