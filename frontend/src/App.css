@@ -54,6 +54,8 @@
 .app-shell.dark .task-form input,
 .app-shell.dark .task-form select,
 .app-shell.dark .task-item,
+.app-shell.dark .goals-panel,
+.app-shell.dark .goal-item,
 .app-shell.dark .task-panel,
 .app-shell.dark .stats-card,
 .app-shell.dark .filter-group {
@@ -70,8 +72,13 @@
   color: #a78bfa;
 }
 
-.app-shell.dark .task-title {
+.app-shell.dark .task-title,
+.app-shell.dark .goal-title {
   color: #f1f5f9;
+}
+
+.app-shell.dark .goal-progress {
+  color: #a78bfa;
 }
 
 .app-shell.dark .task-form input,
@@ -135,12 +142,51 @@
   color: #f8fafc;
 }
 
+.goals-panel,
 .task-panel {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 22px;
   padding: 22px;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.05);
+}
+
+.goals-panel {
+  margin-bottom: 26px;
+}
+
+.goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.goal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 18px;
+  background: #f8fafc;
+}
+
+.goal-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.goal-title {
+  font-size: 1rem;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.goal-progress {
+  font-size: 0.85rem;
+  color: #4f46e5;
+  font-weight: 700;
 }
 
 .task-form {
@@ -277,6 +323,32 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.task-due {
+  font-size: 0.85rem;
+  color: #0f172a;
+  background: #fff3f3;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid #fee2e2;
+}
+
+.task-overdue {
+  font-size: 0.75rem;
+  color: #b91c1c;
+  background: #fff0f0;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+  font-weight: 700;
 }
 
 .task-item.completed .task-title {

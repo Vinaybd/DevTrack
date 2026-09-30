@@ -23,15 +23,25 @@ const initialTasks = [
   }
 ]
 
+const sampleGoals = [
+  { id: 1, title: 'Complete React sprint', target: 3, completed: 1 },
+  { id: 2, title: 'Finish backend milestones', target: 2, completed: 1 },
+  { id: 3, title: 'Practice coding interview questions', target: 5, completed: 3 }
+]
+
 function Dashboard() {
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem('devtrack-tasks')
     return savedTasks ? JSON.parse(savedTasks) : initialTasks
   })
+  const [goals, setGoals] = useState(sampleGoals)
   const [newTask, setNewTask] = useState('')
   const [newDueDate, setNewDueDate] = useState('')
   const [selectedPriority, setSelectedPriority] = useState('Medium')
   const [filter, setFilter] = useState('all')
+  const [showGoalForm, setShowGoalForm] = useState(false)
+  const [newGoalTitle, setNewGoalTitle] = useState('')
+  const [newGoalTarget, setNewGoalTarget] = useState(1)
 
   useEffect(() => {
     localStorage.setItem('devtrack-tasks', JSON.stringify(tasks))
@@ -102,6 +112,29 @@ function Dashboard() {
     setNewDueDate('')
   }
 
+  function handleAddGoal(event) {
+    if (event && event.preventDefault) event.preventDefault()
+
+    const trimmedGoal = newGoalTitle.trim()
+    const safeTarget = Math.max(1, Number(newGoalTarget) || 1)
+
+    if (!trimmedGoal) return
+
+    setGoals(currentGoals => [
+      {
+        id: Date.now(),
+        title: trimmedGoal,
+        target: safeTarget,
+        completed: 0
+      },
+      ...currentGoals
+    ])
+
+    setNewGoalTitle('')
+    setNewGoalTarget(1)
+    setShowGoalForm(false)
+  }
+
   return (
     <main className="dashboard-shell">
       <section className="dashboard-header">
@@ -124,6 +157,48 @@ function Dashboard() {
         <ProgressCard title="Today's Progress" completed={completedTasks} label="tasks completed" />
         <ProgressCard title="Remaining" completed={pendingTasks} label="tasks left" />
         <ProgressCard title="Completion" completed={`${progressPercent}%`} label="done" />
+      </section>
+
+      <section className="goals-panel">
+        <div className="task-toolbar">
+          <h2>Goals</h2>
+          <button type="button" onClick={() => setShowGoalForm(current => !current)}>
+            Add Goal
+          </button>
+        </div>
+
+        {showGoalForm && (
+          <form className="task-form" onSubmit={handleAddGoal}>
+            <input
+              type="text"
+              value={newGoalTitle}
+              onChange={event => setNewGoalTitle(event.target.value)}
+              placeholder="Goal title"
+              aria-label="Goal title"
+            />
+
+            <input
+              type="number"
+              min="1"
+              value={newGoalTarget}
+              onChange={event => setNewGoalTarget(event.target.value)}
+              aria-label="Goal target"
+            />
+
+            <button type="submit">Save Goal</button>
+          </form>
+        )}
+
+        <div className="goals-list">
+          {goals.map(goal => (
+            <div key={goal.id} className="goal-item">
+              <div className="goal-copy">
+                <span className="goal-title">{goal.title}</span>
+                <span className="goal-progress">{goal.completed} / {goal.target}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="task-panel">

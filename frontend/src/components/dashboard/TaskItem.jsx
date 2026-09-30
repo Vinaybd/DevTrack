@@ -5,6 +5,9 @@ function TaskItem({ task, onComplete, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false)
   const [draftTitle, setDraftTitle] = useState(task.title)
 
+  const todayISO = new Date().toISOString().slice(0, 10)
+  const isOverdue = task.dueDate && !task.completed && task.dueDate < todayISO
+
   function handleSave() {
     onEdit(draftTitle)
     setIsEditing(false)
@@ -33,11 +36,20 @@ function TaskItem({ task, onComplete, onDelete, onEdit }) {
           </div>
         ) : (
           <div className="task-copy">
+            <div className="task-header">
               <span className="task-title">{task.title}</span>
+            </div>
+
+            <div className="task-meta">
               {task.dueDate && (
-                <span className="task-due">{new Date(task.dueDate).toLocaleDateString()}</span>
+                <>
+                  <span className="task-due">{new Date(task.dueDate).toLocaleDateString()}</span>
+                  {isOverdue && <span className="task-overdue">Overdue</span>}
+                </>
               )}
+
               <span className="task-priority">{task.priority}</span>
+            </div>
           </div>
         )}
       </div>
